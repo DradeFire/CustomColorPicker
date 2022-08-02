@@ -1,5 +1,3 @@
-package com.example.customview_training.custom_view
-
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.*
@@ -17,8 +15,8 @@ class CustomColorPicker @JvmOverloads constructor(
 ) : View(context, attrs, defStyleAttr) {
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        val desiredWidth = 310.dp().toInt()
-        val desiredHeight = 95.dp().toInt()
+        val desiredWidth = endWidth.toInt()
+        val desiredHeight = endHeight.toInt()
 
         val widthMode = MeasureSpec.getMode(widthMeasureSpec)
         val widthSize = MeasureSpec.getSize(widthMeasureSpec)
@@ -67,6 +65,18 @@ class CustomColorPicker @JvmOverloads constructor(
         isAntiAlias = true
         strokeWidth = 4.dp()
     }
+    private val cornerPaint = Paint().apply {
+        this.color = Color.BLACK
+        isDither = true
+        style = Paint.Style.STROKE
+        strokeJoin = Paint.Join.ROUND
+        strokeCap = Paint.Cap.ROUND
+        isAntiAlias = true
+        strokeWidth = 2.dp()
+    }
+    private val backColor = Color.parseColor("#FB8C00")
+    private val endWidth = 310f.dp()
+    private val endHeight = 95f.dp()
 
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas!!)
@@ -159,15 +169,7 @@ class CustomColorPicker @JvmOverloads constructor(
         canvas.withSave {
             translate(xOffset, 60f)
             drawRoundRect(0f, 0f, 160f, 160f, 12f, 12f,
-                Paint().apply {
-                    this.color = Color.BLACK
-                    isDither = true
-                    style = Paint.Style.STROKE
-                    strokeJoin = Paint.Join.ROUND
-                    strokeCap = Paint.Cap.ROUND
-                    isAntiAlias = true
-                    strokeWidth = 2.dp()
-                }
+                cornerPaint
             )
             paint.color = color.value!!
             drawRoundRect(0f, 0f, 160f, 160f, 12f, 12f, paint)
@@ -195,15 +197,7 @@ class CustomColorPicker @JvmOverloads constructor(
         canvas.withSave {
             translate(x, y)
             drawRoundRect(0f, 0f, 110f, 110f, 12f, 12f,
-                Paint().apply {
-                    this.color = Color.BLACK
-                    isDither = true
-                    style = Paint.Style.STROKE
-                    strokeJoin = Paint.Join.ROUND
-                    strokeCap = Paint.Cap.ROUND
-                    isAntiAlias = true
-                    strokeWidth = 2.dp()
-                }
+                cornerPaint
             )
         }
         canvas.withSave {
@@ -215,8 +209,8 @@ class CustomColorPicker @JvmOverloads constructor(
 
     private fun drawBack(canvas: Canvas) {
         canvas.withSave {
-            paint.color = Color.parseColor("#FB8C00")
-            drawRoundRect(0f, 0f, 310f.dp(), 95f.dp(), 25f, 25f, paint)
+            paint.color = backColor
+            drawRoundRect(0f, 0f, endWidth, endHeight, 25f, 25f, paint)
         }
     }
 
